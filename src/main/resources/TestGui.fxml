@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="150.0" maxWidth="400.0" minHeight="15.0" minWidth="400.0" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #3C3F41;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="m1Button" focusTraversable="false" layoutX="80.0" layoutY="70.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="100.0" text="M1" textAlignment="CENTER">
+         <font>
+            <Font name="Arial Narrow" size="27.0" />
+         </font>
+      </Button>
+      <Button fx:id="m2Button" focusTraversable="false" layoutX="222.0" layoutY="70.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="91.0" text="M2" textAlignment="CENTER">
+         <font>
+            <Font name="Arial Narrow" size="27.0" />
+         </font>
+      </Button>
+      <Text fx:id="textStatus" fill="#f09427" layoutX="51.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Подключение к НППУ ..." textAlignment="CENTER" wrappingWidth="282.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
