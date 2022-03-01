@@ -3,25 +3,27 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class NppuConnect {
-    private static String messageConnect_Connecting = "Подключение к НППУ...";
-    private static String messageConnect_Connected = "Подключен.";
-    private static String messageConnect_NotConnected = "НППУ не доступна!";
+    private static final String messageConnect_Connecting = "Подключение к НППУ...";
+    private static final String messageConnect_Connected = "Подключен.";
+    private static final String messageExchange_NotExchange = "Нет обмена.";
+    private static final String messageConnect_NotConnected = "НППУ не доступна!";
     private static String messageCurrentStatus = messageConnect_Connecting;
-    private String addressIP = "192.168.2.100";
-    private int port_SetCommand = 1777;
-    private int port_GetCommand = 1804;
+    private final String addressIP = "192.168.2.100";
+    private final int port_SetCommand = 1777;
+    private final int port_GetCommand = 1804;
     private Socket server_SetConnect;
     private SocketPostman server_GetConnect;
     private int modemChanel = 1;
     private DataOutputStream dataOutputStream;
-    private String version = "v1.0";
+    private final String version = "v1.0";
     private static NppuConnect nppuConnect;
+
+
     private NppuConnect(){
         try {
-            messageCurrentStatus = messageConnect_Connecting;
             Socket server_SetConnect = new Socket(addressIP, port_SetCommand);
-            SocketPostman server_GetConnect = new SocketPostman(addressIP, port_GetCommand, new short[15], new short[3], SocketPostmanTaskTypeList.READ_SYMBOL_ARRAY);
-            messageCurrentStatus = messageConnect_Connected;
+            server_GetConnect = new SocketPostman(addressIP, port_GetCommand, new short[15], new short[3], SocketPostmanTaskTypeList.READ_SYMBOL_ARRAY);
+            connectStatusWatcher();
             dataOutputStream = new DataOutputStream(server_SetConnect.getOutputStream());
             modemChanelWatcher();
         }catch (Exception e){
@@ -37,6 +39,36 @@ public class NppuConnect {
         });
         connectingThread.start();
     }
+
+    public final boolean isConnected(){
+        return server_GetConnect.isConnected();
+    }
+
+    private void connectStatusWatcher(){
+        Thread connectStatusWatcherThread = new Thread(()->{
+            while(true){
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+
+                }
+
+                if(server_GetConnect.isConnected()){
+                    if(server_GetConnect.isDataExchange()){
+                        messageCurrentStatus = messageConnect_Connected;
+                    }else{
+                        messageCurrentStatus = messageExchange_NotExchange;
+                    }
+                }else{
+                    messageCurrentStatus = messageConnect_NotConnected;
+                }
+
+            }
+        });
+        connectStatusWatcherThread.start();
+    }
+
 
     public static NppuConnect getNppuConnect(){
         return nppuConnect;
