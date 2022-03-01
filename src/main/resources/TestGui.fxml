@@ -5,14 +5,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="150.0" maxWidth="400.0" minHeight="15.0" minWidth="400.0" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #3C3F41;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="150.0" maxWidth="400.0" minHeight="15.0" minWidth="400.0" prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #3C3F41;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MyController">
    <children>
-      <Button fx:id="m1Button" focusTraversable="false" layoutX="80.0" layoutY="70.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="100.0" text="M1" textAlignment="CENTER">
+      <Button fx:id="m1Button" focusTraversable="false" layoutX="80.0" layoutY="70.0" mnemonicParsing="false" onAction="#switchM1" prefHeight="58.0" prefWidth="100.0" text="M1" textAlignment="CENTER">
          <font>
             <Font name="Arial Narrow" size="27.0" />
          </font>
       </Button>
-      <Button fx:id="m2Button" focusTraversable="false" layoutX="222.0" layoutY="70.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="91.0" text="M2" textAlignment="CENTER">
+      <Button fx:id="m2Button" focusTraversable="false" layoutX="222.0" layoutY="70.0" mnemonicParsing="false" onAction="#switchM2" prefHeight="58.0" prefWidth="91.0" text="M2" textAlignment="CENTER">
          <font>
             <Font name="Arial Narrow" size="27.0" />
          </font>
