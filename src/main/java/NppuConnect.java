@@ -1,40 +1,48 @@
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class NppuConnect {
     private static final String messageConnect_Connecting = "Подключение к НППУ...";
     private static final String messageConnect_Connected = "Подключен.";
-    private static final String messageExchange_NotExchange = "Нет обмена.";
+    private static final String messageExchange_NotExchange = "Устанавливаем обмен.";
     private static final String messageConnect_NotConnected = "НППУ не доступна!";
     private static String messageCurrentStatus = messageConnect_Connecting;
-    private final String addressIP = "192.168.2.100";
-    private final int port_SetCommand = 1777;
-    private final int port_GetCommand = 1804;
-    private Socket server_SetConnect;
-    private SocketPostman server_GetConnect;
+    private final static String addressIP = "192.168.2.100";
+    private final static int port_SetCommand = 1777;
+    private final static int port_GetCommand = 1804;
+    private static Socket server_SetConnect;
+    private static SocketPostman server_GetConnect;
     private int modemChanel = 1;
     private DataOutputStream dataOutputStream;
     private final String version = "v1.0";
     private static NppuConnect nppuConnect;
 
 
-    private NppuConnect(){
-        try {
-            Socket server_SetConnect = new Socket(addressIP, port_SetCommand);
-            server_GetConnect = new SocketPostman(addressIP, port_GetCommand, new short[15], new short[3], SocketPostmanTaskTypeList.READ_SYMBOL_ARRAY);
-            connectStatusWatcher();
-            dataOutputStream = new DataOutputStream(server_SetConnect.getOutputStream());
-            modemChanelWatcher();
-        }catch (Exception e){
-            messageCurrentStatus = messageConnect_NotConnected;
-        }
+    private NppuConnect() throws IOException {
+        dataOutputStream = new DataOutputStream(server_SetConnect.getOutputStream());
+        connectStatusWatcher();
+        modemChanelWatcher();
+        autoReconnect();
     }
 
     public static void connect(){
         Thread connectingThread = new Thread(()->{
-            if(nppuConnect == null){
+            do{
+                try {
+                    messageCurrentStatus = messageConnect_Connecting;
+                    server_SetConnect = new Socket(addressIP, port_SetCommand);
+                    server_GetConnect = new SocketPostman(addressIP, port_GetCommand, new short[15], new short[3], SocketPostmanTaskTypeList.READ_SYMBOL_ARRAY);
+
+                }catch (Exception e){
+                    messageCurrentStatus = messageConnect_NotConnected;
+                }
+            }while(server_GetConnect == null || !server_GetConnect.isConnected());
+            try {
                 nppuConnect = new NppuConnect();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         connectingThread.start();
@@ -44,9 +52,31 @@ public class NppuConnect {
         return server_GetConnect.isConnected();
     }
 
+    private void autoReconnect(){
+        int delay = 1000;
+
+        Thread autoReconnectThread = new Thread(()->{
+            while (true){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                if(!server_GetConnect.isConnected()){
+                    NppuConnect.connect();
+                    break;
+                }
+
+            }
+        });
+        autoReconnectThread.start();
+    }
+
+
     private void connectStatusWatcher(){
         Thread connectStatusWatcherThread = new Thread(()->{
-            while(true){
+            while(server_GetConnect.isConnected()){
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {
@@ -87,7 +117,7 @@ public class NppuConnect {
 
     private void modemChanelWatcher(){
         Thread modemChanelWatcherThread = new Thread(()->{
-            while (true){
+            while (server_GetConnect.isConnected()){
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {

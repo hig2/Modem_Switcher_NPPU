@@ -7,13 +7,22 @@
     <groupId>com.asura</groupId>
     <artifactId>Modem_Switcher_NPPU</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <jdkVersion>1.8</jdkVersion>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <product.company>MultiModule</product.company>
+        <product.title>PluginLoader</product.title>
+        <exeFileName>PluginLoader</exeFileName>
     </properties>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -23,7 +32,23 @@
                     <mainClass>com.example.App</mainClass>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>ModemMonitor</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
         </plugins>
+
     </build>
 
     <dependencies>
@@ -32,7 +57,6 @@
             <artifactId>javafx-controls</artifactId>
             <version>17.0.2</version>
         </dependency>
+
     </dependencies>
-
-
 </project>

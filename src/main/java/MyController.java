@@ -18,24 +18,28 @@ public class MyController implements Initializable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
                 textStatus.setText(NppuConnect.getMessageCurrentStatus());
-                if(NppuConnect.getNppuConnect() != null && NppuConnect.getNppuConnect().isConnected()){
-                    switch (NppuConnect.getNppuConnect().getModemChanel()){
-                        case 1:
-                            System.out.println("1");
-                            m1Button.setStyle("-fx-background-color: #50C878");
-                            m2Button.setStyle("-fx-background-color: #DDDDDD");
-                            break;
-                        case 2:
-                            System.out.println("2");
-                            m1Button.setStyle("-fx-background-color: #DDDDDD");
-                            m2Button.setStyle("-fx-background-color: #50C878");
-                            break;
+                try {
+                    if(NppuConnect.getNppuConnect() != null && NppuConnect.getNppuConnect().isConnected()){
+                        switch (NppuConnect.getNppuConnect().getModemChanel()){
+                            case 1:
+                                m1Button.setStyle("-fx-background-color: #50C878");
+                                m2Button.setStyle("-fx-background-color: #DDDDDD");
+                                break;
+                            case 2:
+                                m1Button.setStyle("-fx-background-color: #DDDDDD");
+                                m2Button.setStyle("-fx-background-color: #50C878");
+                                break;
+                        }
+                    }else{
+                        m1Button.setStyle("-fx-background-color: #DDDDDD");
+                        m2Button.setStyle("-fx-background-color: #DDDDDD");
                     }
-                }else{
-                    m1Button.setStyle("-fx-background-color: #DDDDDD");
-                    m2Button.setStyle("-fx-background-color: #DDDDDD");
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+
             }
         });
         statusMassageWatcherThread.start();
