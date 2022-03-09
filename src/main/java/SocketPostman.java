@@ -90,17 +90,17 @@ public class SocketPostman {
     }
 
     private void readSymbolArrayMod(byte[] buffer) throws IOException {
-        t.set(System.currentTimeMillis());
         int numByte = dataInputStream.read(buffer);
        if(parseBuffer(buffer, numByte)){
+           t.set(System.currentTimeMillis());
            dataExchange = true;
        }
     }
 
     private void readSymbolArrayBoomerangSlaveMod(byte[] buffer) throws IOException {
-        t.set(System.currentTimeMillis());
         int numByte = dataInputStream.read(buffer);
         if(parseBuffer(buffer, numByte)){
+            t.set(System.currentTimeMillis());
             dataExchange = true;
             dataOutputStream.writeUTF(getMessage());
         }
@@ -109,7 +109,7 @@ public class SocketPostman {
 
     private void startTask() throws IOException {
         byte[] buffer = new byte[inArray.length * 10];
-        final int delay = 3500;
+        final int delay = 2500;
 
         Thread thread = new Thread(() -> {
             while (connectStatus) {
