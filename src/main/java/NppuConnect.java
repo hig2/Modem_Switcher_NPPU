@@ -1,5 +1,6 @@
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -32,6 +33,13 @@ public class NppuConnect {
             do {
                 try {
                     messageCurrentStatus = messageConnect_Connecting;
+                    System.out.println("реконект!");
+                    if((server_SetConnect != null) || (server_GetConnect != null)){
+                        server_SetConnect.close();
+                        server_GetConnect.close();
+                        server_SetConnect = null;
+                        server_GetConnect = null;
+                    }
                     server_SetConnect = new Socket(addressIP, port_SetCommand);
                     server_GetConnect = new SocketPostman(addressIP, port_GetCommand, new short[15], new short[3], SocketPostmanTaskTypeList.READ_SYMBOL_ARRAY);
 
@@ -64,6 +72,7 @@ public class NppuConnect {
                         break;
                     }
                 }catch(NullPointerException e){
+                    NppuConnect.connect();
                     break;
                 }catch (Exception e) {
                     e.printStackTrace();

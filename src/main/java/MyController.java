@@ -37,7 +37,7 @@ public class MyController implements Initializable {
                         m2Button.setStyle("-fx-background-color: #DDDDDD");
                     }
                 }catch (Exception e){
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
 
             }
