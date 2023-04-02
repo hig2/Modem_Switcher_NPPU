@@ -47,7 +47,7 @@ public class MyController implements Initializable {
                     }else{
                         m1Button.setStyle("-fx-background-color: #DDDDDD");
                         m2Button.setStyle("-fx-background-color: #DDDDDD");
-                        
+
                         a1Button.setStyle("-fx-background-color: #DDDDDD");
                         a2Button.setStyle("-fx-background-color: #DDDDDD");
 
