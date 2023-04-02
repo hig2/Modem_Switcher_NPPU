@@ -32,9 +32,25 @@ public class MyController implements Initializable {
                                 m2Button.setStyle("-fx-background-color: #50C878");
                                 break;
                         }
+
+                        switch (NppuConnect.getNppuConnect().getAntChanel()){
+                            case 1:
+                                a1Button.setStyle("-fx-background-color: #50C878");
+                                a2Button.setStyle("-fx-background-color: #DDDDDD");
+                                break;
+                            case 2:
+                                a1Button.setStyle("-fx-background-color: #DDDDDD");
+                                a2Button.setStyle("-fx-background-color: #50C878");
+                                break;
+                        }
+
                     }else{
                         m1Button.setStyle("-fx-background-color: #DDDDDD");
                         m2Button.setStyle("-fx-background-color: #DDDDDD");
+                        
+                        a1Button.setStyle("-fx-background-color: #DDDDDD");
+                        a2Button.setStyle("-fx-background-color: #DDDDDD");
+
                     }
                 }catch (Exception e){
                     // e.printStackTrace();
@@ -50,6 +66,12 @@ public class MyController implements Initializable {
 
     @FXML
     private Button m2Button;
+
+    @FXML
+    private Button a1Button;
+
+    @FXML
+    private Button a2Button;
 
     @FXML
     private Text textStatus;
@@ -73,6 +95,28 @@ public class MyController implements Initializable {
         if(NppuConnect.getNppuConnect() != null){
             try {
                 NppuConnect.getNppuConnect().setModem(2);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void switchA1(ActionEvent event) {
+        if(NppuConnect.getNppuConnect() != null){
+            try {
+                NppuConnect.getNppuConnect().setAnt(1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void switchA2(ActionEvent event) {
+        if(NppuConnect.getNppuConnect() != null){
+            try {
+                NppuConnect.getNppuConnect().setAnt(2);
             } catch (IOException e) {
                 e.printStackTrace();
             }

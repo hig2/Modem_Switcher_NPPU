@@ -16,6 +16,7 @@ public class NppuConnect {
     private static Socket server_SetConnect;
     private static SocketPostman server_GetConnect;
     private int modemChanel = 1;
+    private int antChanel = 1;
     private DataOutputStream dataOutputStream;
     private final String version = "v1.0";
     private static NppuConnect nppuConnect;
@@ -25,6 +26,7 @@ public class NppuConnect {
         dataOutputStream = new DataOutputStream(server_SetConnect.getOutputStream());
         connectStatusWatcher();
         modemChanelWatcher();
+        antChanelWatcher();
         autoReconnect();
     }
 
@@ -125,6 +127,10 @@ public class NppuConnect {
         return modemChanel;
     }
 
+    public final int getAntChanel() {
+        return antChanel;
+    }
+
     private void modemChanelWatcher() {
         Thread modemChanelWatcherThread = new Thread(() -> {
             while (server_GetConnect.isConnected()) {
@@ -133,7 +139,21 @@ public class NppuConnect {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                modemChanel = (server_GetConnect.getInArrayLink()[10] + 1);
+                modemChanel = (server_GetConnect.getInArrayLink()[10]);
+            }
+        });
+        modemChanelWatcherThread.start();
+    }
+
+    private void antChanelWatcher() {
+        Thread modemChanelWatcherThread = new Thread(() -> {
+            while (server_GetConnect.isConnected()) {
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                modemChanel = (server_GetConnect.getInArrayLink()[11]);
             }
         });
         modemChanelWatcherThread.start();
@@ -146,6 +166,17 @@ public class NppuConnect {
                 break;
             case 2:
                 dataOutputStream.writeBytes("{\"command\":\"WD_Directive\",\"value\":14}" + "\n");
+                break;
+        }
+    }
+
+    public final void setAnt(int numAnt) throws IOException {
+        switch (numAnt) {
+            case 1:
+                dataOutputStream.writeBytes("{\"command\":\"WD_Directive\",\"value\":15}" + "\n");
+                break;
+            case 2:
+                dataOutputStream.writeBytes("{\"command\":\"WD_Directive\",\"value\":16}" + "\n");
                 break;
         }
     }

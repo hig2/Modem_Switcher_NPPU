@@ -26,7 +26,7 @@ public class ModemMonitor extends Application{
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass()
                     .getResource("TestGui.fxml")));
             primaryStage.setTitle("ModemMonitor v1.0");
-            primaryStage.setScene(new Scene(root, 400, 170, Color.web("#3C3F41")));
+            primaryStage.setScene(new Scene(root, 400, 261, Color.web("#3C3F41")));
             primaryStage.getIcons().add(new Image("picture/favicon.png"));
             primaryStage.setResizable(false);
             primaryStage.show();
